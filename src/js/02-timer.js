@@ -1,5 +1,7 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import Notiflix from 'notiflix';
+
 
 const options = {
     enableTime: true,
@@ -9,7 +11,8 @@ const options = {
     onClose(selectedDates) {  
       const currentDate = new Date();
       if(selectedDates[0].getTime() < currentDate.getTime()){
-        alert("Doctor, Doctor Who? It's not a TARDIS! Please select the correct date. We need back to the future.");
+        const message = "Doctor, Doctor Who? It's not a TARDIS! Please select the correct date. We need back to the future.";
+        Notiflix.Report.failure('Please select the correct date', message, 'Back to the future');
         btnStart.disabled = true; 
         return
       }
@@ -17,7 +20,7 @@ const options = {
       clearInterval(timerId);
       resetDisplayTimer()
       endDate =selectedDates[0].getTime();
-      btnStart.disabled = false
+      btnStart.disabled = false;
     },
 };
 
@@ -28,7 +31,7 @@ let endDate;
 let timerId;
 
 btnStart.disabled = true;
-btnStart.addEventListener("click", onStart);
+btnStart.addEventListener("click", onTimerStart);
 
 flatpickr(datatimePicker, options);
 function convertMs(ms) {
@@ -50,7 +53,7 @@ function convertMs(ms) {
     return { days, hours, minutes, seconds };
 }
 
-function onStart(e){
+function onTimerStart(e){
   btnStart.disabled = true;
   timerId = setInterval(displayTimer, 500);
 }
@@ -85,5 +88,4 @@ function displayTimer(){
   hoursDisplay.textContent = hours.toString().padStart(2, "0");;
   minutesDisplay.textContent = minutes.toString().padStart(2, "0");
   secondsDisplay.textContent = seconds.toString().padStart(2, "0");
-
 }
