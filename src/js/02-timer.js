@@ -71,21 +71,16 @@ function resetDisplayTimer(){
 
 function displayTimer(){
   const currentDate = new Date();
-  const daysDisplay = document.querySelector("span[data-days]")
-  const hoursDisplay = document.querySelector("span[data-hours]")
-  const minutesDisplay = document.querySelector("span[data-minutes]")
-  const secondsDisplay = document.querySelector("span[data-seconds]")
+  const timeObj =convertMs(endDate- currentDate.getTime())
 
-  const {days, hours, minutes, seconds} =convertMs(endDate- currentDate.getTime())
-
-  if(seconds<0){
+  if(timeObj.seconds<0){
     resetDisplayTimer()
     clearInterval(timerId);
     alert("Welcome to the future")
     return
   }
-  daysDisplay.textContent = days.toString().padStart(2, "0");
-  hoursDisplay.textContent = hours.toString().padStart(2, "0");;
-  minutesDisplay.textContent = minutes.toString().padStart(2, "0");
-  secondsDisplay.textContent = seconds.toString().padStart(2, "0");
+
+  for (const key in timeObj) {
+    document.querySelector(`span[data-${key}]`).textContent = timeObj[key].toString().padStart(2, "0"); 
+  }
 }
